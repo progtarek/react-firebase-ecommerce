@@ -3,7 +3,7 @@ import {
   getAuth,
   signInWithPopup,
   GoogleAuthProvider,
-  signInWithRedirect,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { getDoc, setDoc, doc, getFirestore } from "firebase/firestore";
 const firebaseConfig = {
@@ -26,8 +26,7 @@ provider.setCustomParameters({
 
 export const auth = getAuth(app);
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
-export const signInWithGoogleRedirect = () =>
-  signInWithRedirect(auth, provider);
+
 const firesoreDB = getFirestore(app);
 
 export const createUserFromGoogleAuth = async (userAuth) => {
@@ -46,4 +45,29 @@ export const createUserFromGoogleAuth = async (userAuth) => {
   }
 
   return userRef;
+};
+
+export const createGoogleUserWithEmailAndPassword = async (
+  displayName,
+  email,
+  password
+) => {
+  try {
+    const response = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = await createUserFromGoogleAuth({
+      ...response.user,
+      displayName,
+    });
+    user && alert("User created successfully");
+  } catch (error) {
+    if (error.code.includes("auth/email-already-in-use")) {
+      alert("Email already in use");
+    } else {
+      console.error(error);
+    }
+  }
 };

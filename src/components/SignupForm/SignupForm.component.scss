@@ -1,0 +1,8 @@
+.form-group {
+  display: flex;
+  margin-bottom: 0.5rem;
+  flex-direction: column;
+  label {
+    margin-bottom: 5px;
+  }
+}

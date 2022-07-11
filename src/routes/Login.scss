@@ -1,0 +1,8 @@
+.login-container {
+  display: flex;
+  flex-direction: row;
+  .right,
+  .left {
+    flex: 1 0 50%;
+  }
+}

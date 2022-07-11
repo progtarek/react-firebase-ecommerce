@@ -1,36 +1,29 @@
-import { getRedirectResult } from "firebase/auth";
-import React, { useEffect } from "react";
+import React from "react";
 
+import { SignupForm } from "../components/SignupForm/SignupForm.component";
 import {
-  auth,
   signInWithGooglePopup,
   createUserFromGoogleAuth,
-  signInWithGoogleRedirect,
 } from "../utils/firebase.util";
+import "./Login.scss";
 
 export const Login = () => {
   const loginWithGoogleHandler = async () => {
     const { user } = await signInWithGooglePopup();
-    await createUserFromGoogleAuth(user);
+    try {
+      await createUserFromGoogleAuth(user);
+      alert("Logged in successfully");
+    } catch (error) {}
   };
 
-  useEffect(() => {
-    getRedirectResult(auth)
-      .then(async (response) => {
-        console.log("response", response);
-        response?.user && (await createUserFromGoogleAuth(response.user));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
   return (
-    <div>
-      <button onClick={loginWithGoogleHandler}>Login with Google</button>
-      <button onClick={signInWithGoogleRedirect}>
-        Login with Google Redirect
-      </button>
+    <div className="login-container">
+      <div className="left">
+        <button onClick={loginWithGoogleHandler}>Login with Google</button>
+      </div>
+      <div className="right">
+        <SignupForm />
+      </div>
     </div>
   );
 };
