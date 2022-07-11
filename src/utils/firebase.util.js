@@ -1,17 +1,7 @@
 import { initializeApp } from "firebase/app";
-import {
-  getAuth,
-  signInWithPopup,
-  signInWithRedirect,
-  GoogleAuthProvider,
-} from "firebase/auth";
-
 import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getDoc, setDoc, doc, getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyDeKsx2kQi-deNBXl8Re7R2zLFbRp7TewM",
   authDomain: "crwn-f153e.firebaseapp.com",
@@ -24,7 +14,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
   prompt: "select_account",
@@ -32,3 +22,22 @@ provider.setCustomParameters({
 
 export const auth = getAuth(app);
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+const firesoreDB = getFirestore(app);
+
+export const createUserFromGoogleAuth = async (userAuth) => {
+  const userRef = doc(firesoreDB, "users", userAuth.uid);
+  const userSnapshot = await getDoc(userRef);
+
+  if (!userSnapshot.exists()) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date().getTime();
+
+    try {
+      await setDoc(userRef, { displayName, email, createdAt });
+    } catch (error) {
+      console.log("Failed to create a user", error);
+    }
+  }
+
+  return userRef;
+};
