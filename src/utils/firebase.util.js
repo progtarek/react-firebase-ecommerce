@@ -1,6 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithRedirect,
+} from "firebase/auth";
 import { getDoc, setDoc, doc, getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyDeKsx2kQi-deNBXl8Re7R2zLFbRp7TewM",
@@ -22,6 +26,8 @@ provider.setCustomParameters({
 
 export const auth = getAuth(app);
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+export const signInWithGoogleRedirect = () =>
+  signInWithRedirect(auth, provider);
 const firesoreDB = getFirestore(app);
 
 export const createUserFromGoogleAuth = async (userAuth) => {
