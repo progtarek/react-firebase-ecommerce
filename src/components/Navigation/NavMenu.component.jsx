@@ -12,6 +12,7 @@ export const NavMenu = () => {
       <div className="menu">
         <Link to="/">Home</Link>
         <Link to="/shop">Shop</Link>
+        <Link to="/login">Login</Link>
       </div>
     </nav>
   );
