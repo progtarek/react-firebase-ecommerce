@@ -18,6 +18,7 @@ export const NavMenu = () => {
       </Link>
       <div className="menu">
         <Link to="/">Home</Link>
+        <Link to="/shop">Shop</Link>
         {userContext.currentUser ? (
           <a onClick={onLogout}>Logout</a>
         ) : (
