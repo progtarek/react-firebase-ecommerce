@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { createGoogleUserWithEmailAndPassword } from "../../utils/firebase.util";
+import { Button } from "../Button/Button.component";
 import "./SignupForm.component.scss";
 const signupFields = {
   displayName: "",
@@ -72,7 +73,10 @@ export const SignupForm = () => {
             onChange={(e) => onInputChange(e)}
           />
         </div>
-        <button type="submit">Create Account</button>
+
+        <Button theme="primary" type="submit">
+          Create Account
+        </Button>
       </form>
     </div>
   );
