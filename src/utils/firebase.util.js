@@ -5,6 +5,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import { getDoc, setDoc, doc, getFirestore } from "firebase/firestore";
 const firebaseConfig = {
@@ -69,6 +70,7 @@ export const createGoogleUserWithEmailAndPassword = async (
       displayName,
     });
     user && alert("User created successfully");
+    return response;
   } catch (error) {
     if (error.code.includes("auth/email-already-in-use")) {
       alert("Email already in use");
@@ -77,3 +79,5 @@ export const createGoogleUserWithEmailAndPassword = async (
     }
   }
 };
+
+export const logoutCurrentUser = async () => signOut(auth);

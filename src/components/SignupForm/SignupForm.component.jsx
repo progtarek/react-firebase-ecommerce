@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { UserContext } from "../../contexts/user.context";
 import { createGoogleUserWithEmailAndPassword } from "../../utils/firebase.util";
 import { Button } from "../Button/Button.component";
 import "./SignupForm.component.scss";
@@ -12,6 +13,7 @@ const signupFields = {
 export const SignupForm = () => {
   const [signupFieldsState, setSignupFields] = useState(signupFields);
   const { displayName, email, password, confirmPassword } = signupFieldsState;
+  const userContext = useContext(UserContext);
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
@@ -22,7 +24,12 @@ export const SignupForm = () => {
     e.preventDefault();
     if (password !== confirmPassword) return;
     try {
-      await createGoogleUserWithEmailAndPassword(displayName, email, password);
+      const response = await createGoogleUserWithEmailAndPassword(
+        displayName,
+        email,
+        password
+      );
+      response?.user && userContext.setCurrentUser(response.user);
       setSignupFields(signupFields);
     } catch (error) {
       console.error(error);
