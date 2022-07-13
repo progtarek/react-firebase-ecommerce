@@ -18,6 +18,10 @@ nav {
 }
 
 .shopping-bag-container {
+  position: relative;
+}
+
+.cart-trigger {
   width: 30px;
   display: inline-flex;
   position: relative;

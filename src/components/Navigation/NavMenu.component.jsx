@@ -1,18 +1,36 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./NavMenu.component.scss";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { ReactComponent as ShoppingBag } from "../../assets/shopping-bag.svg";
 import { UserContext } from "../../contexts/user.context";
 import { logoutCurrentUser } from "../../utils/firebase.util";
-import { Button } from "../../components/Button/Button.component";
+import { CartContext } from "../../contexts/cart.context";
+import { CartDropdown } from "../Cart/Cart-Dropdown.component";
 
 export const NavMenu = () => {
   const userContext = useContext(UserContext);
+  const cartContext = useContext(CartContext);
+  const wrapperRef = useRef(null);
+
   const onLogout = async () => {
     await logoutCurrentUser();
     userContext.setCurrentUser(null);
   };
+
+  const handleClickOutside = function (event) {
+    if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+      cartContext.setDropdown(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, false);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, false);
+    };
+  }, []);
+
   return (
     <nav className="container">
       <Link to="/">
@@ -26,17 +44,17 @@ export const NavMenu = () => {
         ) : (
           <Link to="/login">Login</Link>
         )}
-        <div className="shopping-bag-container">
-          <ShoppingBag />
-          <div className="counter">10</div>
-          <div className="shopping-cart-container">
-            <Button type="button" theme="dark">
-              Go to checkout page
-            </Button>
-            <Button type="button" theme="dark">
-              Go to checkout page
-            </Button>
+        <div className="shopping-bag-container" ref={wrapperRef}>
+          <div
+            className="cart-trigger"
+            onClick={() =>
+              cartContext.setDropdown(!cartContext.isCartDropdownOpen)
+            }
+          >
+            <ShoppingBag />
+            <div className="counter">10</div>
           </div>
+          <CartDropdown />
         </div>
       </div>
     </nav>
