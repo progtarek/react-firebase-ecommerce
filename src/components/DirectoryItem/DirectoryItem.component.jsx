@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router";
 import "./DirectoryItem.module.styles.scss";
 
 const DirectoryItem = ({
@@ -10,8 +11,12 @@ const DirectoryItem = ({
   match,
   history,
 }) => {
+  const navigate = useNavigate();
   return (
-    <div className={`${size} directory-item`} onClick={() => console.log(id)}>
+    <div
+      className={`${size} directory-item`}
+      onClick={() => navigate(`shop/${title.toLowerCase()}`)}
+    >
       <div
         className="background-image"
         style={{

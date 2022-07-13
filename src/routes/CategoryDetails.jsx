@@ -21,13 +21,14 @@ export const CategoryDetails = () => {
         {category.toUpperCase()}
       </h2>
       <div className="category-items-container">
-        {categories[category].map((item) => (
-          <ProductCard
-            {...item}
-            key={item.id}
-            addToCart={() => cartContext.addItemToCart(item)}
-          />
-        ))}
+        {categories[category]?.length &&
+          categories[category].map((item) => (
+            <ProductCard
+              {...item}
+              key={item.id}
+              addToCart={() => cartContext.addItemToCart(item)}
+            />
+          ))}
       </div>
     </div>
   );
