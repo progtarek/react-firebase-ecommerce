@@ -18,18 +18,24 @@ export const NavMenu = () => {
     userContext.setCurrentUser(null);
   };
 
-  const handleClickOutside = function (event) {
-    if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-      cartContext.setDropdown(false);
-    }
+  const calcItemsQuantity = () => {
+    console.log("userContext", cartContext.cartItems);
+    return cartContext.cartItems
+      .map((item) => item.quantity)
+      .reduce((prev, current) => prev + current, 0);
   };
 
   useEffect(() => {
+    const handleClickOutside = function (event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        cartContext.setDropdown(false);
+      }
+    };
     document.addEventListener("click", handleClickOutside, false);
     return () => {
       document.removeEventListener("click", handleClickOutside, false);
     };
-  }, []);
+  }, [cartContext]);
 
   return (
     <nav className="container">
@@ -52,7 +58,7 @@ export const NavMenu = () => {
             }
           >
             <ShoppingBag />
-            <div className="counter">10</div>
+            <div className="counter">{calcItemsQuantity()}</div>
           </div>
           <CartDropdown />
         </div>

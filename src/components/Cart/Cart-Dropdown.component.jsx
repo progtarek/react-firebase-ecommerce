@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Button } from "../../components/Button/Button.component";
 import { CartContext } from "../../contexts/cart.context";
+import { CartItem } from "./Cart-Item.component";
 
 export const CartDropdown = () => {
   const cartContext = useContext(CartContext);
@@ -12,10 +13,16 @@ export const CartDropdown = () => {
         display: cartContext.isCartDropdownOpen ? "flex" : "none",
       }}
     >
-      <Button type="button" theme="dark">
-        Go to checkout page
-      </Button>
-      <Button type="button" theme="dark">
+      <div className="cart-items-container" style={{ overflow: "auto" }}>
+        {cartContext.cartItems?.length ? (
+          cartContext.cartItems.map((item) => (
+            <CartItem key={item.id} {...item} />
+          ))
+        ) : (
+          <p style={{ textAlign: "center" }}>Your cart is empty</p>
+        )}
+      </div>
+      <Button type="button" theme="dark" style={{ marginTop: "1rem" }}>
         Go to checkout page
       </Button>
     </div>

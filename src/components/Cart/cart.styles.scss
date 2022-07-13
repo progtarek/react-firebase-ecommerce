@@ -1,0 +1,18 @@
+.cart-item {
+  &-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    &:not(:last-child) {
+      border-bottom: 1px solid #eee;
+    }
+  }
+
+  &-content {
+    h4,
+    p {
+      margin: 0;
+    }
+  }
+}
