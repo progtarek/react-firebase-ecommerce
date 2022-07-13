@@ -11,4 +11,40 @@ nav {
   a:not(:last-child) {
     margin-right: 0.5rem;
   }
+  .menu {
+    align-items: center;
+    display: flex;
+  }
+}
+
+.shopping-bag-container {
+  width: 30px;
+  display: inline-flex;
+  position: relative;
+  cursor: pointer;
+
+  .counter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 13px;
+    margin-top: 5px;
+    font-weight: 500;
+  }
+}
+
+.shopping-cart-container {
+  height: 400px;
+  width: 300px;
+  position: absolute;
+  background-color: white;
+  border: 2px solid #333;
+  right: -30px;
+  top: 35px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 15px;
 }
