@@ -7,7 +7,16 @@ import {
   createUserWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { getDoc, setDoc, doc, getFirestore } from "firebase/firestore";
+import {
+  getDoc,
+  setDoc,
+  doc,
+  getFirestore,
+  writeBatch,
+  collection,
+  getDocs,
+  query,
+} from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyDeKsx2kQi-deNBXl8Re7R2zLFbRp7TewM",
   authDomain: "crwn-f153e.firebaseapp.com",
@@ -81,3 +90,32 @@ export const createGoogleUserWithEmailAndPassword = async (
 };
 
 export const logoutCurrentUser = async () => signOut(auth);
+
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const batch = writeBatch(firesoreDB);
+  const collectionRef = collection(firesoreDB, collectionKey);
+
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    batch.set(docRef, object);
+  });
+
+  await batch.commit();
+};
+
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(firesoreDB, "categories");
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+
+  return categoryMap;
+};

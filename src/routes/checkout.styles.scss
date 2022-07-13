@@ -7,4 +7,11 @@
       flex: 17%;
     }
   }
+
+  &-footer {
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 }

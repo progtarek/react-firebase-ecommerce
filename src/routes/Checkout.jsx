@@ -2,6 +2,7 @@ import React, { Fragment, useContext } from "react";
 import { CheckoutItem } from "../components/Cart/Checkout-item.component";
 import "./checkout.styles.scss";
 import { CartContext } from "../contexts/cart.context";
+import { Button } from "../components/Button/Button.component";
 
 export const Checkout = () => {
   const cartContext = useContext(CartContext);
@@ -13,6 +14,14 @@ export const Checkout = () => {
   };
   const onRemoveItem = (item) => {
     cartContext.removeItem(item.id);
+  };
+
+  const calculateTotalCart = () => {
+    return cartContext.cartItems.reduce((prev, current) => {
+      return prev?.quantity
+        ? prev.quantity * prev.price
+        : prev + current.quantity * current.price;
+    }, 0);
   };
 
   return (
@@ -37,6 +46,12 @@ export const Checkout = () => {
                 onRemove={() => onRemoveItem(item)}
               />
             ))}
+          </div>
+          <div className="checkout-footer">
+            <h2>Total: ${calculateTotalCart()} </h2>
+            <Button type="button" theme="primary">
+              Checkout
+            </Button>
           </div>
         </div>
       ) : (
