@@ -19,7 +19,6 @@ export const NavMenu = () => {
   };
 
   const calcItemsQuantity = () => {
-    console.log("userContext", cartContext.cartItems);
     return cartContext.cartItems
       .map((item) => item.quantity)
       .reduce((prev, current) => prev + current, 0);
