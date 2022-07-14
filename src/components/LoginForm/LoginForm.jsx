@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
+import { setCurrentUser } from "../../store/user.reducer";
 import {
   signInWithGooglePopup,
   createUserFromGoogleAuth,
@@ -6,7 +7,7 @@ import {
 } from "../../utils/firebase.util";
 import { Button } from "../Button/Button.component";
 import "./LoginForm.scss";
-import { UserContext } from "../../contexts/user.context";
+import { useDispatch } from "react-redux";
 
 const loginFields = {
   email: "",
@@ -15,13 +16,13 @@ const loginFields = {
 
 export const LoginForm = () => {
   const [loginFieldsState, setLoginFields] = useState(loginFields);
-  const userContext = useContext(UserContext);
   const { email, password } = loginFieldsState;
+  const dispatch = useDispatch();
 
   const loginWithGoogleHandler = async () => {
     const { user } = await signInWithGooglePopup();
     try {
-      userContext.setCurrentUser(user);
+      dispatch(setCurrentUser(user));
       await createUserFromGoogleAuth(user);
       alert("Logged in successfully");
     } catch (error) {}
@@ -36,7 +37,7 @@ export const LoginForm = () => {
     e.preventDefault();
     await signInWithGoogleEmailAndPassword(email, password)
       .then((res) => {
-        userContext.setCurrentUser(res.user);
+        dispatch(setCurrentUser(res.user));
         alert("Logged in successfully");
       })
       .catch((err) => {

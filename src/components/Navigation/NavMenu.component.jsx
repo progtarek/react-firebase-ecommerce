@@ -3,19 +3,21 @@ import { Link } from "react-router-dom";
 import "./NavMenu.component.scss";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { ReactComponent as ShoppingBag } from "../../assets/shopping-bag.svg";
-import { UserContext } from "../../contexts/user.context";
 import { logoutCurrentUser } from "../../utils/firebase.util";
 import { CartContext } from "../../contexts/cart.context";
 import { CartDropdown } from "../Cart/Cart-Dropdown.component";
+import { setCurrentUser } from "../../store/user.reducer";
+import { useDispatch, useSelector } from "react-redux";
 
 export const NavMenu = () => {
-  const userContext = useContext(UserContext);
+  const currentUser = useSelector((state) => state.user.currentUser);
   const cartContext = useContext(CartContext);
   const wrapperRef = useRef(null);
+  const dispatch = useDispatch();
 
   const onLogout = async () => {
     await logoutCurrentUser();
-    userContext.setCurrentUser(null);
+    dispatch(setCurrentUser(null));
   };
 
   const calcItemsQuantity = () => {
@@ -44,7 +46,7 @@ export const NavMenu = () => {
       <div className="menu">
         <Link to="/">Home</Link>
         <Link to="/shop">Shop</Link>
-        {userContext.currentUser ? (
+        {currentUser ? (
           <span onClick={onLogout}>Logout</span>
         ) : (
           <Link to="/login">Login</Link>

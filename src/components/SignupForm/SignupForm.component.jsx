@@ -1,5 +1,6 @@
-import React, { useContext, useState } from "react";
-import { UserContext } from "../../contexts/user.context";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setCurrentUser } from "../../store/user.reducer";
 import { createGoogleUserWithEmailAndPassword } from "../../utils/firebase.util";
 import { Button } from "../Button/Button.component";
 import "./SignupForm.component.scss";
@@ -13,7 +14,7 @@ const signupFields = {
 export const SignupForm = () => {
   const [signupFieldsState, setSignupFields] = useState(signupFields);
   const { displayName, email, password, confirmPassword } = signupFieldsState;
-  const userContext = useContext(UserContext);
+  const dispatch = useDispatch();
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +30,7 @@ export const SignupForm = () => {
         email,
         password
       );
-      response?.user && userContext.setCurrentUser(response.user);
+      response?.user && dispatch(setCurrentUser(response.user));
       setSignupFields(signupFields);
     } catch (error) {
       console.error(error);

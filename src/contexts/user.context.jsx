@@ -1,3 +1,4 @@
+// FIXME this was replaced with Redux setup
 const { createContext, useReducer } = require("react");
 
 const USER_ACTIONS = {
